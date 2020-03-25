@@ -1,16 +1,15 @@
 <template>
-  <div v-on:click="next">
-    <h1>{{ msg }}</h1>
-    <button v-on:click="viewEnglish">보기</button>
+  <div>
+    <div v-on:click="next">
+      <h1>{{ msg }}</h1>
+    </div>
+
+    <button v-on:click="viewEnglish" class="btn btn-dark">보기</button>
   </div>
 </template>
 
 <script>
-  import profile from '../js/profile'
-  import Vue from 'vue'
-  import VuePapaParse from 'vue-papa-parse'
-
-  Vue.use(VuePapaParse)
+  import SentenceParser from '../js/SentenceParser'
 
   export default {
     name: 'Switcher',
@@ -18,35 +17,21 @@
       return {
         msg: 'Welcome to Hell',
         data: [],
-        eng: ''
+        filePaths: [
+          '/data/source-01.csv'
+        ],
+        sentences: [],
+        selectedSentence: {}
       }
     },
     created () {
-      const that = this
-      this.readTextFile(profile.staticPath() + '/data/source-01.csv',
-        (text) => {
-          const json = that.$papa.parse(text, {
-            delimiter: '|',
-            skipEmptyLines: true
-          })
-
-          if (json) {
-            that.data = json.data
-            that.shuffle(that.data)
-            console.log(that.data)
-          }
-        })
+      this.fetch()
     },
     methods: {
-      readTextFile: function (filePath, callback) {
-        const request = new XMLHttpRequest()
-        request.open('GET', filePath, false)
-
-        request.onload = function (e) {
-          callback(e.target.response)
-        }
-
-        request.send()
+      fetch: function () {
+        const sentences = new SentenceParser().parse(this.filePaths)
+        this.shuffle(sentences)
+        this.sentences = sentences
       },
 
       shuffle: function (array) {
@@ -54,17 +39,16 @@
       },
 
       next: function () {
-        if (this.data.length > 0) {
-          const sentences = this.data.shift()
-          this.eng = sentences[0]
-          this.msg = sentences[1]
+        if (this.sentences.length > 0) {
+          this.selectedSentence = this.sentences.shift()
+          this.msg = this.selectedSentence.kor
         } else {
-          alert('재 시작')
+          this.fetch()
         }
       },
 
       viewEnglish: function () {
-        alert(this.eng)
+        alert(this.selectedSentence.eng)
       }
     }
   }
