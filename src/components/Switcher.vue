@@ -6,6 +6,7 @@
 </template>
 
 <script>
+  import profile from '../js/profile'
   import Vue from 'vue'
   import VuePapaParse from 'vue-papa-parse'
 
@@ -22,8 +23,8 @@
     },
     created () {
       const that = this
-      this.readTextFile('/static/data/source-01.csv')
-        .then(text => {
+      this.readTextFile(profile.staticPath() + '/data/source-01.csv',
+        (text) => {
           const json = that.$papa.parse(text, {
             delimiter: '|',
             skipEmptyLines: true
@@ -37,17 +38,15 @@
         })
     },
     methods: {
-      readTextFile: function (filePath) {
+      readTextFile: function (filePath, callback) {
         const request = new XMLHttpRequest()
         request.open('GET', filePath, false)
 
-        return new Promise(function (resolve) {
-          request.onload = function (e) {
-            resolve(e.target.response)
-          }
+        request.onload = function (e) {
+          callback(e.target.response)
+        }
 
-          request.send()
-        })
+        request.send()
       },
 
       shuffle: function (array) {
@@ -56,11 +55,11 @@
 
       next: function () {
         if (this.data.length > 0) {
-          const sentences = this.data.shift();
-          this.eng = sentences[0];
-          this.msg = sentences[1];
+          const sentences = this.data.shift()
+          this.eng = sentences[0]
+          this.msg = sentences[1]
         } else {
-          alert("재 시작")
+          alert('재 시작')
         }
       },
 

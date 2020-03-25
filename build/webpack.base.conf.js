@@ -8,12 +8,6 @@ function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
 
-const createLintingRule = () => ({
-  test: /\.(js|vue)$/,
-  enforce: 'pre',
-  include: [resolve('src'), resolve('test')]
-})
-
 module.exports = {
   context: path.resolve(__dirname, '../'),
   entry: {
