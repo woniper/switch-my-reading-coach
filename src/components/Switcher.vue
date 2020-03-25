@@ -4,7 +4,7 @@
       <h1>{{ msg }}</h1>
     </div>
 
-    <button v-on:click="viewEnglish" class="btn btn-dark">보기</button>
+    <b-button variant="danger" v-on:click="viewEnglish">영문장 보기</b-button>
   </div>
 </template>
 
@@ -48,7 +48,9 @@
       },
 
       viewEnglish: function () {
-        alert(this.selectedSentence.eng)
+        if (this.selectedSentence.eng) {
+          alert(this.selectedSentence.eng)
+        }
       }
     }
   }
