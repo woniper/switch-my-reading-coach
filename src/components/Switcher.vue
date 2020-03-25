@@ -18,7 +18,9 @@
         msg: 'Welcome to Hell',
         data: [],
         filePaths: [
-          '/data/source-01.csv'
+          '/data/A01-01.csv',
+          '/data/B02-04.csv',
+          '/data/B05-10.csv',
         ],
         sentences: [],
         selectedSentence: {}
@@ -30,12 +32,13 @@
     methods: {
       fetch: function () {
         const sentences = new SentenceParser().parse(this.filePaths)
-        this.shuffle(sentences)
-        this.sentences = sentences
+        this.sentences = this.shuffle(sentences)
+        console.info(sentences)
       },
 
       shuffle: function (array) {
         array.sort(() => Math.random() - 0.5)
+        return array
       },
 
       next: function () {
