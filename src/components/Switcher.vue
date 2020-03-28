@@ -1,5 +1,15 @@
 <template>
   <div>
+    <div v-on:click="next">
+      <b-alert show variant="success">
+        <h4 class="alert-heading"> {{ msg }} </h4>
+        <hr v-show="dismissEnglish">
+        <p class="mb-0" v-show="dismissEnglish">
+          {{ selectedSentence.eng }}
+        </p>
+      </b-alert>
+    </div>
+
     <b-alert
       :show="dismissCountDown"
       dismissible
@@ -17,17 +27,7 @@
       ></b-progress>
     </b-alert>
 
-    <div v-on:click="next">
-      <b-alert show variant="success">
-        <h4 class="alert-heading"> {{ msg }} </h4>
-        <hr v-show="eng">
-        <p class="mb-0" v-show="eng">
-          {{ eng }}
-        </p>
-      </b-alert>
-    </div>
-
-    <b-button variant="danger" v-on:click="viewEnglish">Show English</b-button>
+    <b-button variant="danger" v-on:click="showEnglish">Show English</b-button>
   </div>
 </template>
 
@@ -39,8 +39,7 @@
     data () {
       return {
         msg: 'Welcome to Hell',
-        eng: "",
-        data: [],
+        dismissEnglish: false,
         filePaths: [
           '/data/A01-01.csv',
           '/data/A02-03.csv',
@@ -75,17 +74,17 @@
         if (this.sentences.length > 0) {
           this.selectedSentence = this.sentences.shift()
           this.msg = this.selectedSentence.kor
-          this.eng = ""
           this.showAlert()
+          this.dismissEnglish = false
         } else {
           alert('모든 문장이 끝났습니다. 다시 시작합니다.')
           this.fetch()
         }
       },
 
-      viewEnglish: function () {
+      showEnglish: function () {
         if (this.selectedSentence.eng) {
-          this.eng = this.selectedSentence.eng
+          this.dismissEnglish = !this.dismissEnglish
         }
       },
 
