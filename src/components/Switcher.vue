@@ -50,6 +50,7 @@
           this.selectedSentence = this.sentences.shift()
           this.msg = this.selectedSentence.kor
         } else {
+          alert('모든 문장이 끝났습니다. 다시 시작합니다.')
           this.fetch()
         }
       },
