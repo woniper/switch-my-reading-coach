@@ -18,10 +18,16 @@
     </b-alert>
 
     <div v-on:click="next">
-      <h1>{{ msg }}</h1>
+      <b-alert show variant="success">
+        <h4 class="alert-heading"> {{ msg }} </h4>
+        <hr v-show="eng">
+        <p class="mb-0" v-show="eng">
+          {{ eng }}
+        </p>
+      </b-alert>
     </div>
 
-    <b-button variant="danger" v-on:click="viewEnglish">영문장 보기</b-button>
+    <b-button variant="danger" v-on:click="viewEnglish">Show English</b-button>
   </div>
 </template>
 
@@ -33,6 +39,7 @@
     data () {
       return {
         msg: 'Welcome to Hell',
+        eng: "",
         data: [],
         filePaths: [
           '/data/A01-01.csv',
@@ -68,6 +75,7 @@
         if (this.sentences.length > 0) {
           this.selectedSentence = this.sentences.shift()
           this.msg = this.selectedSentence.kor
+          this.eng = ""
           this.showAlert()
         } else {
           alert('모든 문장이 끝났습니다. 다시 시작합니다.')
@@ -77,7 +85,7 @@
 
       viewEnglish: function () {
         if (this.selectedSentence.eng) {
-          alert(this.selectedSentence.eng)
+          this.eng = this.selectedSentence.eng
         }
       },
 
