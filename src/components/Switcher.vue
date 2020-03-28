@@ -1,5 +1,22 @@
 <template>
   <div>
+    <b-alert
+      :show="dismissCountDown"
+      dismissible
+      variant="warning"
+      @dismissed="dismissCountDown=0"
+      @dismiss-count-down="countDownChanged"
+    >
+      <p>CountDown : {{ dismissCountDown }} seconds...</p>
+
+      <b-progress
+        variant="warning"
+        :max="dismissSecs"
+        :value="dismissCountDown"
+        height="4px"
+      ></b-progress>
+    </b-alert>
+
     <div v-on:click="next">
       <h1>{{ msg }}</h1>
     </div>
@@ -27,7 +44,9 @@
           '/data/B05-10.csv',
         ],
         sentences: [],
-        selectedSentence: {}
+        selectedSentence: {},
+        dismissSecs: 5,
+        dismissCountDown: 0
       }
     },
     created () {
@@ -49,6 +68,7 @@
         if (this.sentences.length > 0) {
           this.selectedSentence = this.sentences.shift()
           this.msg = this.selectedSentence.kor
+          this.showAlert()
         } else {
           alert('모든 문장이 끝났습니다. 다시 시작합니다.')
           this.fetch()
@@ -59,6 +79,14 @@
         if (this.selectedSentence.eng) {
           alert(this.selectedSentence.eng)
         }
+      },
+
+      countDownChanged (dismissCountDown) {
+        this.dismissCountDown = dismissCountDown
+      },
+
+      showAlert () {
+        this.dismissCountDown = this.dismissSecs
       }
     }
   }
