@@ -19,6 +19,10 @@
         data: [],
         filePaths: [
           '/data/A01-01.csv',
+          '/data/A02-03.csv',
+          '/data/A03-05.csv',
+          '/data/A04-07.csv',
+          '/data/B01-02.csv',
           '/data/B02-04.csv',
           '/data/B05-10.csv',
         ],
