@@ -47,6 +47,8 @@
           '/data/A04-07.csv',
           '/data/B01-02.csv',
           '/data/B02-04.csv',
+          '/data/B03-06.csv',
+          '/data/B04-08.csv',
           '/data/B05-10.csv',
         ],
         sentences: [],
