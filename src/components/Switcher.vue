@@ -53,6 +53,8 @@
         ],
         sentences: [],
         selectedSentence: {},
+        selectedSentenceIndex: 0,
+        sentencesSize: 0,
         dismissSecs: 5,
         dismissCountDown: 0
       }
@@ -63,6 +65,9 @@
     methods: {
       fetch: function () {
         const sentences = new SentenceParser().parse(this.filePaths)
+        this.sentencesSize = sentences.length
+        this.selectedSentenceIndex = 0
+        this.dismissEnglish = false
         this.sentences = this.shuffle(sentences)
         console.info(sentences)
       },
@@ -73,15 +78,24 @@
       },
 
       next: function () {
-        if (this.sentences.length > 0) {
-          this.selectedSentence = this.sentences.shift()
-          this.msg = this.selectedSentence.kor
-          this.showAlert()
-          this.dismissEnglish = false
-        } else {
+        if (this.isLastSentence()) {
           alert('모든 문장이 끝났습니다. 다시 시작합니다.')
           this.fetch()
         }
+
+        this.selectedSentence = this.nextSentence()
+        this.msg = this.selectedSentence.kor
+        this.showAlert()
+      },
+
+      nextSentence: function () {
+        const selectedSentence = this.sentences[this.selectedSentenceIndex++]
+        this.selectedSentence = selectedSentence
+        return selectedSentence
+      },
+
+      isLastSentence: function () {
+        return this.selectedSentenceIndex === this.sentences.length
       },
 
       showEnglish: function () {
@@ -96,6 +110,7 @@
 
       showAlert () {
         this.dismissCountDown = this.dismissSecs
+        this.dismissEnglish = false
       }
     }
   }
