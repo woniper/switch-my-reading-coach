@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-on:click="next">
+    <div>
       <b-alert show variant="success">
         <h4 class="alert-heading"> {{ msg }} </h4>
         <hr v-show="dismissEnglish">
@@ -27,7 +27,9 @@
       ></b-progress>
     </b-alert>
 
+    <b-button variant="info" v-on:click="previous">Previous</b-button>
     <b-button variant="danger" v-on:click="showEnglish">Show English</b-button>
+    <b-button variant="info" v-on:click="next">Next</b-button>
   </div>
 </template>
 
@@ -96,6 +98,27 @@
 
       isLastSentence: function () {
         return this.selectedSentenceIndex === this.sentences.length
+      },
+
+      previous: function () {
+        if (this.isFirstSentence()) {
+          alert('현재 문장이 첫 문장입니다.')
+          return
+        }
+
+        this.selectedSentence = this.previousSentence()
+        this.msg = this.selectedSentence.kor
+        this.showAlert()
+      },
+
+      previousSentence: function () {
+        const selectedSentence = this.sentences[this.selectedSentenceIndex--]
+        this.selectedSentence = selectedSentence
+        return selectedSentence
+      },
+
+      isFirstSentence: function () {
+        return 0 === this.selectedSentenceIndex
       },
 
       showEnglish: function () {
