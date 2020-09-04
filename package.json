@@ -10,7 +10,7 @@
     "build": "node build/build.js"
   },
   "dependencies": {
-    "papaparse": "^5.1.1",
+    "papaparse": "^5.2.0",
     "bootstrap": "^4.4.1",
     "bootstrap-vue": "^2.8.0",
     "vue": "^2.6.11",
